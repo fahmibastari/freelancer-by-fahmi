@@ -18,11 +18,10 @@ export default function EditSessionForm({
 }) {
   const [date, setDate] = useState(() => {
     const d = new Date(session.date)
-    d.setMinutes(d.getMinutes() - d.getTimezoneOffset()) // agar tidak offset ke UTC
-    return d.toISOString().slice(0, 16) // ambil 'YYYY-MM-DDTHH:mm'
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
+    return d.toISOString().slice(0, 16)
   })
-  
-  
+
   const [fee, setFee] = useState(session.fee.toString())
   const [attended, setAttended] = useState(session.attended)
   const [loading, setLoading] = useState(false)
@@ -35,14 +34,15 @@ export default function EditSessionForm({
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        date: new Date(date).toISOString(), // ubah jadi full ISO format
+        date: new Date(date).toISOString(),
         fee: parseFloat(fee),
         attended,
-      }),      
+      }),
     })
 
     const updated = await res.json()
     setLoading(false)
+
     if (res.ok) {
       onUpdated(updated)
     } else {
@@ -51,43 +51,44 @@ export default function EditSessionForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2 w-full">
+    <form onSubmit={handleSubmit} className="space-y-3 w-full bg-neutral-900 p-4 rounded-lg border border-neutral-800">
       <input
-  type="datetime-local"
-  value={date}
-  onChange={e => setDate(e.target.value)}
-  className="border px-2 py-1 rounded w-full"
-/>
-
+        type="datetime-local"
+        value={date}
+        onChange={e => setDate(e.target.value)}
+        className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
 
       <input
         type="number"
         value={fee}
         onChange={(e) => setFee(e.target.value)}
-        className="border px-2 py-1 rounded w-full"
+        className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Fee"
       />
 
-      <label className="flex gap-2 items-center">
+      <label className="flex items-center gap-3 text-sm text-white">
         <input
           type="checkbox"
           checked={attended}
           onChange={(e) => setAttended(e.target.checked)}
+          className="accent-blue-600 w-4 h-4"
         />
         Hadir?
       </label>
 
-      <div className="flex gap-2">
+      <div className="flex gap-3 pt-2">
         <button
           type="submit"
           disabled={loading}
-          className="bg-green-600 text-white px-4 py-1 rounded"
+          className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition disabled:opacity-50"
         >
           {loading ? "Menyimpan..." : "Update"}
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="text-gray-500 px-3 py-1 border border-gray-300 rounded"
+          className="px-4 py-2 border border-neutral-600 text-gray-400 hover:text-white rounded-lg transition"
         >
           Batal
         </button>
