@@ -19,10 +19,10 @@ export default function AddSessionForm({
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        date,
+        date: new Date(date).toISOString(), // ubah ke ISO format
         fee: parseFloat(fee),
         companyId,
-      }),
+      }),      
     })
 
     setLoading(false)
@@ -40,12 +40,12 @@ export default function AddSessionForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-2 mt-2">
       <input
-        type="date"
-        value={date}
-        onChange={e => setDate(e.target.value)}
-        required
-        className="border px-2 py-1 rounded w-full"
-      />
+  type="datetime-local"
+  value={date}
+  onChange={e => setDate(e.target.value)}
+  required
+  className="border px-2 py-1 rounded w-full"
+/>
       <input
         type="number"
         placeholder="Fee"

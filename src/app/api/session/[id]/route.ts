@@ -10,7 +10,16 @@ export async function PATCH(req: NextRequest) {
 
   const data = await req.json()
 
-  const updated = await prisma.company.update({
+    // ✅ Tambahkan di sini
+    if (data.attended !== undefined) {
+      data.attended = Boolean(data.attended)
+    }
+  
+    if (data.date) {
+      data.date = new Date(data.date)
+    }
+
+  const updated = await prisma.session.update({
     where: { id },
     data,
   })
@@ -20,13 +29,16 @@ export async function PATCH(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   const id = req.nextUrl.pathname.split("/").pop()
-
   if (!id) {
     return NextResponse.json({ error: "ID tidak ditemukan" }, { status: 400 })
   }
 
-  await prisma.session.deleteMany({ where: { companyId: id } })
-  await prisma.company.delete({ where: { id } })
+  // ❗ Hapus hanya session-nya
+  await prisma.session.delete({
+    where: { id }
+  })
 
   return NextResponse.json({ success: true })
 }
+
+
