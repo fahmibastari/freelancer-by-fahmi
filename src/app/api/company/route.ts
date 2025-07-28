@@ -26,9 +26,10 @@ export async function POST(req: Request) {
         name,
         address,
         feePerSession,
-        userId: user.id, // pastikan sudah ditambahkan ke model
-      },
-    });
+        userId: user.id, // ✅ PENTING
+      }
+    })
+    
 
     return NextResponse.json(company); // ✅ wajib return JSON valid
   } catch (err) {
