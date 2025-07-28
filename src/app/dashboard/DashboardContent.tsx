@@ -6,6 +6,8 @@ import type { CompanyWithSessions } from "@/lib/types"
 import AddSessionForm from "./AddSessionForm"
 import CompanyActions from "./CompanyActions"
 import EditSessionForm from "./EditSessionForm"
+import { signOut } from "next-auth/react"
+
 
 export default function DashboardContent() {
   const [companies, setCompanies] = useState<CompanyWithSessions[]>([])
@@ -118,6 +120,12 @@ export default function DashboardContent() {
   return (
     <main className="p-6 max-w-4xl mx-auto space-y-6">
       <h1 className="text-3xl font-bold">Dashboard Freelancer</h1>
+      <button
+    onClick={() => signOut({ callbackUrl: "/" })}
+    className="text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+  >
+    Logout
+  </button>
 
       <section className="mt-8">
         <h2 className="text-2xl font-bold text-white-800 mb-4">
